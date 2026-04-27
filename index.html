@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Léa & Sacha | L'Union</title>
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@200;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --fuchsia: #D82D7E;
+            --coral: #FF7F50;
+            --amber: #FFB347;
+            --gold-light: #f4e4bc;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: #0a0a0a;
+            color: var(--gold-light);
+            font-family: 'Montserrat', sans-serif;
+            height: 100dvh;
+            width: 100vw;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            position: relative;
+        }
+
+        .bg-image {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            filter: brightness(0.4);
+            /* Mise à jour du lien de l'image */
+            background: url('lea-sacha.jpeg') no-repeat center top / cover;
+        }
+
+        /* CONTAINER CENTRAL UNIQUE */
+        .intro-container {
+            z-index: 1;
+            opacity: 0;
+            animation: fadeIn 2s ease-out forwards 0.5s;
+            width: 100%;
+            padding: 0 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transform: translateY(30px);
+        }
+
+        h1 {
+            font-family: 'Great Vibes', cursive;
+            font-size: clamp(3.5rem, 15vw, 5.5rem);
+            font-weight: 400;
+            margin-bottom: 5px;
+            background: linear-gradient(to bottom, #fff, var(--gold-light));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 2px 2px 20px rgba(0,0,0,0.8);
+        }
+
+        .countdown-container {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin: 20px 0 30px 0;
+        }
+
+        .unit {
+            width: 60px;
+            height: 60px;
+            background: rgba(0,0,0,0.6);
+            border: 1px solid rgba(244,228,188,0.2);
+            backdrop-filter: blur(8px);
+            border-radius: 4px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .num {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #fff;
+        }
+
+        .label {
+            font-size: 0.5rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-top: 4px;
+        }
+
+        .date {
+            font-size: 0.9rem;
+            letter-spacing: 5px;
+            padding: 10px 0;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            min-width: 230px;
+            margin-bottom: 50px;
+        }
+
+        .enter-btn {
+            display: block;
+            width: 90%;
+            max-width: 400px;
+            padding: 22px 0;
+            background: linear-gradient(45deg, var(--fuchsia), var(--coral));
+            color: #fff;
+            text-decoration: none;
+            font-size: 1rem;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            font-weight: 600;
+            border-radius: 50px;
+            box-shadow: 0 15px 35px rgba(216,45,126,0.5);
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.2s ease;
+        }
+
+        .enter-btn:active {
+            transform: scale(0.96);
+        }
+
+        .enter-btn::after {
+            content: "";
+            position: absolute;
+            top: -50%;
+            left: -60%;
+            width: 20%;
+            height: 200%;
+            background: rgba(255,255,255,0.3);
+            transform: rotate(30deg);
+            animation: shine 3s infinite;
+        }
+
+        @keyframes shine {
+            0% { left: -60%; }
+            20% { left: 120%; }
+            100% { left: 120%; }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(60px); }
+            to { opacity: 1; transform: translateY(30px); }
+        }
+
+        @media (max-width: 480px) {
+            h1 { font-size: 3.8rem; }
+            .enter-btn { width: 95%; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="bg-image"></div>
+
+<div class="intro-container">
+    <h1>Léa & Sacha</h1>
+    
+    <div class="countdown-container" id="timer">
+        <div class="unit"><span class="num" id="days">00</span><span class="label">Jours</span></div>
+        <div class="unit"><span class="num" id="hours">00</span><span class="label">Heures</span></div>
+        <div class="unit"><span class="num" id="mins">00</span><span class="label">Min</span></div>
+        <div class="unit"><span class="num" id="secs">00</span><span class="label">Sec</span></div>
+    </div>
+
+    <p class="date">09 AOÛT 2026</p>
+
+    <a href="invitation.html" class="enter-btn">Voir l'invitation</a>
+</div>
+
+<script>
+    // Mise à jour de la date cible : 9 août 2026
+    const targetDate = new Date("August 9, 2026 16:30:00").getTime();
+
+    function updateCountdown() {
+        const now = new Date().getTime();
+        const diff = targetDate - now;
+
+        if (diff > 0) {
+            const d = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const h = Math.floor((diff / (1000 * 60 * 60)) % 24);
+            const m = Math.floor((diff / (1000 * 60)) % 60);
+            const s = Math.floor((diff / 1000) % 60);
+
+            document.getElementById("days").innerText = d.toString().padStart(2, "0");
+            document.getElementById("hours").innerText = h.toString().padStart(2, "0");
+            document.getElementById("mins").innerText = m.toString().padStart(2, "0");
+            document.getElementById("secs").innerText = s.toString().padStart(2, "0");
+        } else {
+            document.getElementById("timer").innerHTML = "<h2 style='font-family:Great Vibes;color:white;'>C'est le grand jour ✨</h2>";
+        }
+    }
+
+    setInterval(updateCountdown, 1000);
+    updateCountdown();
+</script>
+
+</body>
+</html>
